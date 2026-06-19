@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Training orchestration and reproducibility: seeding, config fingerprinting, MLflow/W&B tracking, and callback-based training loops."
 authors = ["Team Deepiri"]
 readme = "README.md"
-license = "MIT"
+license = "Apache-2.0"
 packages = [{ include = "deepiri_training_orchestrator", from = "src" }]
 
 [tool.poetry.dependencies]
