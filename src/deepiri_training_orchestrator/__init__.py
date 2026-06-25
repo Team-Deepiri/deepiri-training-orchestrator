@@ -28,6 +28,13 @@ from deepiri_training_orchestrator.datasets import (
     semantic_deduplicate,
     version_dataset,
 )
+from deepiri_training_orchestrator.distributed import (
+    DistributedContext,
+    gather_metrics,
+    init_distributed,
+    main_process_only,
+    prepare_model_optimizer,
+)
 from deepiri_training_orchestrator.feedback import (
     FeedbackBuffer,
     FeedbackLoopTrainer,
@@ -51,6 +58,7 @@ __all__ = [
     "DatasetProvenance",
     "DatasetVersioning",
     "DistributedConfig",
+    "DistributedContext",
     "EarlyStoppingCallback",
     "EpochIterator",
     "ExperimentTracker",
@@ -70,11 +78,15 @@ __all__ = [
     "corrections_to_manifest",
     "deduplicate_texts",
     "detect_leakage",
+    "gather_metrics",
+    "init_distributed",
     "initialize_deterministic_training",
+    "main_process_only",
     "prepare_dataset",
+    "prepare_model_optimizer",
     "provenance_from_manifest",
     "semantic_deduplicate",
     "version_dataset",
 ]
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
