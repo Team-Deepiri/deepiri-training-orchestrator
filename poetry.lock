@@ -281,7 +281,7 @@ files = [
 name = "async-timeout"
 version = "5.0.1"
 description = "Timeout context manager for asyncio programs"
-optional = true
+optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 markers = "(extra == \"modelkit\" or extra == \"full\") and python_full_version < \"3.11.3\" and python_version == \"3.11\""
@@ -318,7 +318,7 @@ files = [
 name = "boto3"
 version = "1.43.36"
 description = "The AWS SDK for Python"
-optional = true
+optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"modelkit\" or extra == \"full\""
@@ -339,7 +339,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 name = "botocore"
 version = "1.43.36"
 description = "Low-level, data-driven core of boto 3."
-optional = true
+optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"modelkit\" or extra == \"full\""
@@ -978,9 +978,9 @@ sqlalchemy = {version = "^2.0.0", optional = true}
 tqdm = "^4.66.0"
 
 [package.extras]
-all = ["numpy[] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "pandas (>=2.0.0,<3.0.0)", "pyarrow (>=15.0.0,<16.0.0)", "pydantic (>=2.0.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
-quality = ["numpy[] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "pandas (>=2.0.0,<3.0.0)"]
-semantic = ["numpy[] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)"]
+all = ["numpy[][] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "pandas (>=2.0.0,<3.0.0)", "pyarrow (>=15.0.0,<16.0.0)", "pydantic (>=2.0.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
+quality = ["numpy[][] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "pandas (>=2.0.0,<3.0.0)"]
+semantic = ["numpy[][] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)"]
 streaming = ["pyarrow (>=15.0.0,<16.0.0)"]
 versioning = ["pydantic (>=2.0.0,<3.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
 
@@ -994,7 +994,7 @@ resolved_reference = "60a97b74b2cc4975ceab77c3438c4c692b09c5fa"
 name = "deepiri-modelkit"
 version = "0.2.0"
 description = "Shared contracts, interfaces, and utilities for Deepiri AI/ML services"
-optional = true
+optional = false
 python-versions = ">=3.11,<3.14"
 groups = ["main"]
 markers = "extra == \"modelkit\" or extra == \"full\""
@@ -1014,8 +1014,8 @@ utils = ["torch (>=2.0,<3.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/Team-Deepiri/deepiri-modelkit.git"
-reference = "feat/training-contracts-v0.2"
-resolved_reference = "88af1820a81eecd91ea2144278704a920f81062d"
+reference = "e5183706de2aac33929c401d7ec37270686dd937"
+resolved_reference = "e5183706de2aac33929c401d7ec37270686dd937"
 
 [[package]]
 name = "docker"
@@ -1777,7 +1777,7 @@ i18n = ["Babel (>=2.7)"]
 name = "jmespath"
 version = "1.1.0"
 description = "JSON Matching Expressions"
-optional = true
+optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 markers = "extra == \"modelkit\" or extra == \"full\""
@@ -3493,7 +3493,7 @@ windows-terminal = ["colorama (>=0.4.6)"]
 name = "pyjwt"
 version = "2.13.0"
 description = "JSON Web Token implementation in Python"
-optional = true
+optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 markers = "extra == \"modelkit\" or extra == \"full\""
@@ -3702,7 +3702,7 @@ files = [
 name = "redis"
 version = "5.3.1"
 description = "Python client for Redis database and key-value store"
-optional = true
+optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 markers = "extra == \"modelkit\" or extra == \"full\""
@@ -3898,7 +3898,7 @@ files = [
 name = "s3transfer"
 version = "0.19.0"
 description = "An Amazon S3 Transfer Manager"
-optional = true
+optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"modelkit\" or extra == \"full\""
@@ -5067,4 +5067,4 @@ wandb = ["wandb"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.14"
-content-hash = "99c69b561a40709f199fbf0e5410a731462c27b3e9364efd6fd1c6c1d4b5b808"
+content-hash = "ad0e294d96a3c0e32394ce7ea3ef1145648a1a85fbc1cc8509bdd92f18e69c3c"

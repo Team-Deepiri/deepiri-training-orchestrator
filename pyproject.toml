@@ -13,8 +13,8 @@ numpy = "^2.1.0 || ^1.24.0"
 torch = ">=2.8.0,<2.13.0"
 mlflow = ">=3.11.1,<4.0"
 pydantic = "^2.0"
-deepiri-dataset-processor = { git = "https://github.com/Team-Deepiri/deepiri-dataset-processor.git", branch = "feat/manifest-pipeline-v0.2", extras = ["all"] }
-deepiri-modelkit = { git = "https://github.com/Team-Deepiri/deepiri-modelkit.git", branch = "feat/training-contracts-v0.2", optional = true }
+deepiri-dataset-processor = { git = "https://github.com/Team-Deepiri/deepiri-dataset-processor.git", rev = "60a97b74b2cc4975ceab77c3438c4c692b09c5fa", extras = ["all"] }
+deepiri-modelkit = { git = "https://github.com/Team-Deepiri/deepiri-modelkit.git", rev = "e5183706de2aac33929c401d7ec37270686dd937" }
 wandb = { version = "^0.15", optional = true }
 accelerate = { version = "^0.24", optional = true }
 
