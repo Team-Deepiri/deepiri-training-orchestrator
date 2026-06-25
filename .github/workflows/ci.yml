@@ -26,4 +26,6 @@ jobs:
       - name: Lint
         run: poetry run ruff check src tests
       - name: Test
+        env:
+          MLFLOW_ALLOW_FILE_STORE: "true"
         run: poetry run pytest -q
