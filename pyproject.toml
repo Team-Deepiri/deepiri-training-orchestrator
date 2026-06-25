@@ -16,7 +16,7 @@ pydantic = "^2.0"
 deepiri-dataset-processor = { git = "https://github.com/Team-Deepiri/deepiri-dataset-processor.git", rev = "60a97b74b2cc4975ceab77c3438c4c692b09c5fa", extras = ["all"] }
 deepiri-modelkit = { git = "https://github.com/Team-Deepiri/deepiri-modelkit.git", rev = "e5183706de2aac33929c401d7ec37270686dd937" }
 wandb = { version = "^0.15", optional = true }
-accelerate = { version = "^0.24", optional = true }
+accelerate = { version = ">=0.34,<2.0", optional = true }
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8,<10"
