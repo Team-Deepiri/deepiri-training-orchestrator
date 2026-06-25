@@ -2,6 +2,7 @@
 deepiri-training-orchestrator — reproducible training loops, experiment tracking, callbacks.
 """
 
+from deepiri_training_orchestrator.adapters import HFTrainingAdapter
 from deepiri_training_orchestrator.callbacks import (
     CallbackList,
     CheckpointCallback,
@@ -19,12 +20,16 @@ from deepiri_training_orchestrator.config import (
     TrainingRunConfig,
 )
 from deepiri_training_orchestrator.datasets import (
+    PreparedDataset,
     build_dataset_manifest,
+    build_run_provenance,
     clean_text,
     deduplicate_texts,
     detect_leakage,
     prepare_dataset,
+    prepare_training_run,
     provenance_from_manifest,
+    run_quality_gate_check,
     semantic_deduplicate,
     version_dataset,
 )
@@ -38,6 +43,7 @@ from deepiri_training_orchestrator.distributed import (
 from deepiri_training_orchestrator.feedback import (
     FeedbackBuffer,
     FeedbackLoopTrainer,
+    LiveFineTuneConfig,
     corrections_to_manifest,
 )
 from deepiri_training_orchestrator.orchestrator import EpochIterator, TrainingOrchestrator
@@ -52,6 +58,7 @@ from deepiri_training_orchestrator.tracking import (
 )
 
 __all__ = [
+    "HFTrainingAdapter",
     "CallbackList",
     "CheckpointCallback",
     "CheckpointConfig",
@@ -64,8 +71,10 @@ __all__ = [
     "ExperimentTracker",
     "FeedbackBuffer",
     "FeedbackLoopTrainer",
+    "LiveFineTuneConfig",
     "LoggingCallback",
     "ModelRegistry",
+    "PreparedDataset",
     "ReproducibilityController",
     "TorchCheckpointCallback",
     "TrackingConfig",
@@ -73,6 +82,7 @@ __all__ = [
     "TrainingOrchestrator",
     "TrainingRunConfig",
     "build_dataset_manifest",
+    "build_run_provenance",
     "clean_text",
     "compose_callbacks",
     "corrections_to_manifest",
@@ -83,10 +93,12 @@ __all__ = [
     "initialize_deterministic_training",
     "main_process_only",
     "prepare_dataset",
+    "prepare_training_run",
     "prepare_model_optimizer",
     "provenance_from_manifest",
+    "run_quality_gate_check",
     "semantic_deduplicate",
     "version_dataset",
 ]
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "deepiri-training-orchestrator"
-version = "0.3.0"
+version = "0.4.0"
 description = "Training orchestration and reproducibility: seeding, config fingerprinting, MLflow/W&B tracking, dataset-processor integration, and callback-based training loops."
 authors = ["Team Deepiri"]
 readme = "README.md"

@@ -6,8 +6,15 @@ from __future__ import annotations
 import logging
 from typing import Any, Callable, Dict, Iterable, Iterator, List, Mapping, Optional, TypeVar
 
-from deepiri_training_orchestrator.callbacks import TrainingContext, compose_callbacks
+from deepiri_training_orchestrator.callbacks import (
+    CheckpointCallback,
+    TrainingContext,
+    TorchCheckpointCallback,
+    compose_callbacks,
+)
 from deepiri_training_orchestrator.config import DatasetProvenance, TrainingRunConfig
+from deepiri_training_orchestrator.datasets import prepare_training_run, version_dataset
+from deepiri_training_orchestrator.distributed import DistributedContext, gather_metrics
 from deepiri_training_orchestrator.reproducibility import ReproducibilityController
 from deepiri_training_orchestrator.tracking import ExperimentTracker
 
@@ -46,6 +53,7 @@ class TrainingOrchestrator:
         run_config: Optional[TrainingRunConfig] = None,
         dataset_provenance: Optional[DatasetProvenance] = None,
         correlation_id: Optional[str] = None,
+        distributed_context: Optional[DistributedContext] = None,
     ) -> None:
         self.run_config = run_config
         if run_config is not None:
@@ -67,7 +75,24 @@ class TrainingOrchestrator:
         self._code_hash = code_hash
         self._dataset_provenance = dataset_provenance
         self._correlation_id = correlation_id
+        self._distributed = distributed_context
         self._ctx = TrainingContext(max_steps=max_steps)
+
+        if run_config is not None and run_config.checkpoint.directory:
+            extra = [
+                CheckpointCallback(
+                    run_config.checkpoint.directory,
+                    every=run_config.checkpoint.every_n_steps,
+                ),
+            ]
+            if run_config.checkpoint.save_state_dict:
+                extra.append(
+                    TorchCheckpointCallback(
+                        run_config.checkpoint.directory,
+                        every=run_config.checkpoint.every_n_steps,
+                    )
+                )
+            self.callbacks = compose_callbacks((callbacks or []) + extra)
 
     def fit(
         self,
@@ -80,6 +105,9 @@ class TrainingOrchestrator:
         fingerprint = self.reproducibility.generate_training_fingerprint(
             self.config,
             code_hash=self._code_hash,
+            dataset_hash=(
+                self._dataset_provenance.content_hash if self._dataset_provenance else None
+            ),
         )
         self._ctx.fingerprint = fingerprint
         self._ctx.max_steps = self.max_steps
@@ -140,6 +168,8 @@ class TrainingOrchestrator:
 
                     if self.eval_every and eval_fn and (step + 1) % self.eval_every == 0:
                         eval_metrics = eval_fn()
+                        if self._distributed is not None:
+                            eval_metrics = gather_metrics(self._distributed, eval_metrics)
                         self._ctx.extra["last_eval"] = eval_metrics
                         if tracker is not None:
                             em = {f"eval/{k}": v for k, v in eval_metrics.items()}
@@ -168,6 +198,14 @@ class TrainingOrchestrator:
                 cb.on_train_end(self, self._ctx)
             if tracker is not None:
                 tracker.end_run()
+            if self._dataset_provenance is not None and self.run_config:
+                try:
+                    version_dataset(
+                        self._dataset_provenance.path,
+                        dataset_name=self._dataset_provenance.dataset_id,
+                    )
+                except Exception as exc:
+                    logger.warning("Could not version dataset after training: %s", exc)
 
         return self._ctx
 
@@ -179,9 +217,22 @@ class TrainingOrchestrator:
         experiment_tracker: Optional[ExperimentTracker] = None,
         callbacks: Optional[List[Any]] = None,
         code_hash: Optional[str] = None,
+        distributed_context: Optional[DistributedContext] = None,
+        auto_prepare_dataset: bool = True,
     ) -> TrainingOrchestrator:
         repro = ReproducibilityController(seed=run_config.seed)
         repro.set_seeds()
+        dataset_provenance = run_config.dataset
+        if auto_prepare_dataset and dataset_provenance and dataset_provenance.path:
+            try:
+                prepared = prepare_training_run(
+                    dataset_provenance.path,
+                    preset="training",
+                    dataset_id=dataset_provenance.dataset_id,
+                )
+                dataset_provenance = prepared.provenance
+            except Exception as exc:
+                logger.warning("Auto dataset prep skipped: %s", exc)
         if experiment_tracker is None and run_config.tracking.mlflow_uri:
             experiment_tracker = ExperimentTracker(
                 "training",
@@ -196,4 +247,7 @@ class TrainingOrchestrator:
             experiment_tracker=experiment_tracker,
             callbacks=callbacks,
             code_hash=code_hash,
+            dataset_provenance=dataset_provenance,
+            correlation_id=run_config.correlation_id,
+            distributed_context=distributed_context,
         )

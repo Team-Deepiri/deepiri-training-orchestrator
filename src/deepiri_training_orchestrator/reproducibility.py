@@ -64,12 +64,14 @@ class ReproducibilityController:
         self,
         config: Dict[str, Any],
         code_hash: Optional[str] = None,
+        dataset_hash: Optional[str] = None,
     ) -> str:
         config_str = json.dumps(config, sort_keys=True, default=str)
         fingerprint_data = {
             "seed": self.seed,
             "config": config_str,
             "code_hash": code_hash or "unknown",
+            "dataset_hash": dataset_hash or "unknown",
         }
         fingerprint_json = json.dumps(fingerprint_data, sort_keys=True)
         fingerprint = hashlib.sha256(fingerprint_json.encode()).hexdigest()[:16]
