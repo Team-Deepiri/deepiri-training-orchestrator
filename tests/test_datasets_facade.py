@@ -33,7 +33,6 @@ def test_prepare_training_run(sample_jsonl: Path, tmp_path: Path):
 
 
 def test_fingerprint_includes_dataset_hash():
-    from deepiri_training_orchestrator.config import DatasetProvenance
     from deepiri_training_orchestrator.reproducibility import ReproducibilityController
 
     repro = ReproducibilityController(seed=1)

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict
 
 logger = logging.getLogger(__name__)
 
@@ -53,11 +53,14 @@ class HFTrainingAdapter:
         if not hasattr(self.trainer, "evaluate"):
             return {}
         raw = self.trainer.evaluate()
-        return {k.replace("eval_", ""): float(v) for k, v in raw.items() if isinstance(v, (int, float))}
+        return {
+            k.replace("eval_", ""): float(v)
+            for k, v in raw.items()
+            if isinstance(v, (int, float))
+        }
 
     def state_dict_fn(self) -> Callable[[], Dict[str, Any]]:
         """Return callable for checkpoint callbacks."""
-        import torch
 
         def _state() -> Dict[str, Any]:
             return {

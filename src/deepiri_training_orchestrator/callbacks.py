@@ -44,7 +44,9 @@ class TrainingCallback(Protocol):
 
     def on_train_end(self, orchestrator: Any, ctx: TrainingContext) -> None: ...
 
-    def on_exception(self, orchestrator: Any, ctx: TrainingContext, error: BaseException) -> None: ...
+    def on_exception(
+        self, orchestrator: Any, ctx: TrainingContext, error: BaseException
+    ) -> None: ...
 
 
 class CallbackList:

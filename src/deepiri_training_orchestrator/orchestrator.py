@@ -8,8 +8,8 @@ from typing import Any, Callable, Dict, Iterable, Iterator, List, Mapping, Optio
 
 from deepiri_training_orchestrator.callbacks import (
     CheckpointCallback,
-    TrainingContext,
     TorchCheckpointCallback,
+    TrainingContext,
     compose_callbacks,
 )
 from deepiri_training_orchestrator.config import DatasetProvenance, TrainingRunConfig

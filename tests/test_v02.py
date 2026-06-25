@@ -1,10 +1,7 @@
 from pathlib import Path
 
-import pytest
-
 from deepiri_training_orchestrator import (
     DatasetProvenance,
-    FeedbackBuffer,
     FeedbackLoopTrainer,
     ReproducibilityController,
     TrainingOrchestrator,
