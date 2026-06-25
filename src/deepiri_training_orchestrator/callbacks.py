@@ -7,7 +7,7 @@ import json
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Protocol
+from typing import Any, Callable, Dict, List, Optional, Protocol
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,8 @@ class TrainingContext:
 class TrainingCallback(Protocol):
     def on_train_begin(self, orchestrator: Any, ctx: TrainingContext) -> None: ...
 
+    def on_train_epoch_end(self, orchestrator: Any, ctx: TrainingContext) -> None: ...
+
     def on_step_end(
         self,
         orchestrator: Any,
@@ -42,11 +44,18 @@ class TrainingCallback(Protocol):
 
     def on_train_end(self, orchestrator: Any, ctx: TrainingContext) -> None: ...
 
+    def on_exception(
+        self, orchestrator: Any, ctx: TrainingContext, error: BaseException
+    ) -> None: ...
+
 
 class CallbackList:
     """Default implementations for optional hook methods."""
 
     def on_train_begin(self, orchestrator: Any, ctx: TrainingContext) -> None:
+        pass
+
+    def on_train_epoch_end(self, orchestrator: Any, ctx: TrainingContext) -> None:
         pass
 
     def on_step_end(
@@ -66,6 +75,9 @@ class CallbackList:
         pass
 
     def on_train_end(self, orchestrator: Any, ctx: TrainingContext) -> None:
+        pass
+
+    def on_exception(self, orchestrator: Any, ctx: TrainingContext, error: BaseException) -> None:
         pass
 
 
@@ -153,6 +165,44 @@ class EarlyStoppingCallback(CallbackList):
             self._bad_epochs += 1
         if self._bad_epochs >= self.patience:
             ctx.extra["stop_training"] = True
+
+
+class TorchCheckpointCallback(CallbackList):
+    """Save training metadata and optional torch state dicts."""
+
+    def __init__(
+        self,
+        directory: Path,
+        every: int = 500,
+        *,
+        state_dict_fn: Optional[Callable[[], Dict[str, Any]]] = None,
+    ) -> None:
+        self.directory = Path(directory)
+        self.every = max(1, every)
+        self.state_dict_fn = state_dict_fn
+
+    def on_step_end(
+        self,
+        orchestrator: Any,
+        ctx: TrainingContext,
+        metrics: Dict[str, float],
+    ) -> None:
+        if ctx.step == 0 or ctx.step % self.every != 0:
+            return
+        self.directory.mkdir(parents=True, exist_ok=True)
+        payload = {"step": ctx.step, "metrics": metrics, "fingerprint": ctx.fingerprint}
+        meta_path = self.directory / f"checkpoint_step_{ctx.step}.json"
+        with open(meta_path, "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+        orchestrator.reproducibility.save_fingerprint(self.directory / f"fp_step_{ctx.step}.json")
+        if self.state_dict_fn is not None:
+            try:
+                import torch
+
+                state = self.state_dict_fn()
+                torch.save(state, self.directory / f"state_step_{ctx.step}.pt")
+            except Exception as e:
+                logger.warning("Could not save torch checkpoint: %s", e)
 
 
 def compose_callbacks(callbacks: Optional[List[Any]]) -> List[Any]:

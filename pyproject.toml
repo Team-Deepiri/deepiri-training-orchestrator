@@ -1,21 +1,32 @@
 [tool.poetry]
 name = "deepiri-training-orchestrator"
-version = "0.1.0"
-description = "Training orchestration and reproducibility: seeding, config fingerprinting, MLflow/W&B tracking, and callback-based training loops."
+version = "0.4.0"
+description = "Training orchestration and reproducibility: seeding, config fingerprinting, MLflow/W&B tracking, dataset-processor integration, and callback-based training loops."
 authors = ["Team Deepiri"]
 readme = "README.md"
 license = "Apache-2.0"
 packages = [{ include = "deepiri_training_orchestrator", from = "src" }]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.14"
-numpy = "^2.1.0"
+python = ">=3.11,<3.14"
+numpy = ">=1.24.0,<3.0"
 torch = ">=2.8.0,<2.13.0"
 mlflow = ">=3.11.1,<4.0"
+pydantic = "^2.0"
+deepiri-dataset-processor = { git = "https://github.com/Team-Deepiri/deepiri-dataset-processor.git", tag = "v0.3.1", extras = ["all"] }
+deepiri-modelkit = { git = "https://github.com/Team-Deepiri/deepiri-modelkit.git", tag = "v0.2.0", optional = true }
+wandb = { version = ">=0.16", optional = true }
+accelerate = { version = ">=0.34,<2.0", optional = true }
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8,<10"
 ruff = "^0.8.0"
+
+[tool.poetry.extras]
+modelkit = ["deepiri-modelkit"]
+wandb = ["wandb"]
+distributed = ["accelerate"]
+full = ["deepiri-modelkit", "wandb", "accelerate"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -26,7 +37,7 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]

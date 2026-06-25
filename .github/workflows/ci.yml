@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
 
 jobs:
   test:
@@ -26,4 +26,6 @@ jobs:
       - name: Lint
         run: poetry run ruff check src tests
       - name: Test
+        env:
+          MLFLOW_ALLOW_FILE_STORE: "true"
         run: poetry run pytest -q
