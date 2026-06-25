@@ -966,7 +966,7 @@ optional = false
 python-versions = "^3.11"
 groups = ["main"]
 files = []
-develop = true
+develop = false
 
 [package.dependencies]
 numpy = {version = "^1.24.0 || ^2.1.0", optional = true}
@@ -979,8 +979,10 @@ semantic = ["numpy (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)"]
 versioning = ["pydantic (>=2.0.0,<3.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
 
 [package.source]
-type = "directory"
-url = "../deepiri-platform/diri-helox/deepiri-dataset-processor"
+type = "git"
+url = "https://github.com/Team-Deepiri/deepiri-dataset-processor.git"
+reference = "feat/manifest-pipeline-v0.2"
+resolved_reference = "3c1d73c91ea116684068c90a8f95cc25edc9717d"
 
 [[package]]
 name = "deepiri-modelkit"
@@ -991,7 +993,7 @@ python-versions = ">=3.11,<3.14"
 groups = ["main"]
 markers = "extra == \"modelkit\" or extra == \"full\""
 files = []
-develop = true
+develop = false
 
 [package.dependencies]
 boto3 = "^1.28"
@@ -1004,8 +1006,10 @@ ml = ["httpx (>=0.27,<0.28)", "numpy (>=1.24,<2.0)", "ollama"]
 utils = ["torch (>=2.0,<3.0)"]
 
 [package.source]
-type = "directory"
-url = "../deepiri-platform/deepiri-modelkit"
+type = "git"
+url = "https://github.com/Team-Deepiri/deepiri-modelkit.git"
+reference = "feat/training-contracts-v0.2"
+resolved_reference = "88af1820a81eecd91ea2144278704a920f81062d"
 
 [[package]]
 name = "docker"
@@ -4915,4 +4919,4 @@ wandb = ["wandb"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.14"
-content-hash = "1ec1e0a8309d6c54b0d243d0b45b769501412e6a442344aa14a1777b32993da3"
+content-hash = "99c69b561a40709f199fbf0e5410a731462c27b3e9364efd6fd1c6c1d4b5b808"
