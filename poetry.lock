@@ -962,9 +962,9 @@ sqlalchemy = {version = "^2.0.0", optional = true}
 tqdm = "^4.66.0"
 
 [package.extras]
-all = ["numpy (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "pandas (>=2.0.0,<3.0.0)", "pyarrow (>=18.0.0,<19.0.0)", "pydantic (>=2.0.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
-quality = ["numpy (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "pandas (>=2.0.0,<3.0.0)"]
-semantic = ["numpy (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)"]
+all = ["numpy[] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "pandas (>=2.0.0,<3.0.0)", "pyarrow (>=18.0.0,<19.0.0)", "pydantic (>=2.0.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
+quality = ["numpy[] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "pandas (>=2.0.0,<3.0.0)"]
+semantic = ["numpy[] (>=1.24.0,<2.0.0 || >=2.1.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)"]
 streaming = ["pyarrow (>=18.0.0,<19.0.0)"]
 versioning = ["pydantic (>=2.0.0,<3.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
 
@@ -5121,4 +5121,4 @@ wandb = ["wandb"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.14"
-content-hash = "7d4490b15e8e4ea66df2a09a9648bba89b63fdc977b15a7547a4ac554a1a7461"
+content-hash = "2baff5a70cf5b0f8caf0e05b3f018a382cd3a4974eac67cb8f79f40196253a60"
