@@ -160,23 +160,16 @@ class ExperimentTracker:
 
 
 class DatasetVersioning:
-    """Optional DVC-based dataset versioning (requires ``dvc`` and a DVC repo)."""
+    """Dataset versioning via deepiri-dataset-processor (replaces legacy DVC helper)."""
 
     def __init__(self, dvc_repo_path: str = ".") -> None:
-        self.dvc_repo_path = Path(dvc_repo_path)
+        del dvc_repo_path  # kept for backwards compatibility
 
-    def version_dataset(self, dataset_path: str, description: str = "") -> None:
+    def version_dataset(self, dataset_path: str, description: str = "") -> str:
+        from deepiri_training_orchestrator.datasets import version_dataset
+
         del description
-        import subprocess
-
-        dvc_path = self.dvc_repo_path / "data" / Path(dataset_path).name
-        subprocess.run(
-            ["dvc", "add", str(dvc_path), "-f", str(dvc_path.with_suffix(".dvc"))],
-            check=True,
-        )
-        dvc_file = str(dvc_path.with_suffix(".dvc"))
-        subprocess.run(["git", "add", dvc_file, dvc_file + ".gitignore"], check=True)
-        _tracker_log.info("Dataset versioned: %s", dataset_path)
+        return version_dataset(dataset_path)
 
 
 class ModelRegistry:
