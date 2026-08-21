@@ -945,7 +945,7 @@ openai = ["httpx", "langchain-openai", "openai"]
 
 [[package]]
 name = "deepiri-dataset-processor"
-version = "0.3.0"
+version = "0.3.2"
 description = "Production dataset preprocessing: clean, dedup, safety-check, quality, version, and manifest generation."
 optional = false
 python-versions = "^3.11"
@@ -957,24 +957,24 @@ develop = false
 networkx = "^3.0"
 numpy = ">=1.24.0,<3.0"
 pandas = "^2.0.0"
-pyarrow = "^18.0.0"
+pyarrow = ">=18,<24"
 pydantic = {version = "^2.0.0", optional = true}
 sentence-transformers = "^3.0.0"
 sqlalchemy = {version = "^2.0.0", optional = true}
 tqdm = "^4.66.0"
 
 [package.extras]
-all = ["numpy (>=1.24.0,<3.0)", "pandas (>=2.0.0,<3.0.0)", "pyarrow (>=18.0.0,<19.0.0)", "pydantic (>=2.0.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
+all = ["numpy (>=1.24.0,<3.0)", "pandas (>=2.0.0,<3.0.0)", "pyarrow (>=18,<24)", "pydantic (>=2.0.0,<3.0.0)", "sentence-transformers (>=3.0.0,<4.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
 quality = ["numpy (>=1.24.0,<3.0)", "pandas (>=2.0.0,<3.0.0)"]
 semantic = ["numpy (>=1.24.0,<3.0)", "sentence-transformers (>=3.0.0,<4.0.0)"]
-streaming = ["pyarrow (>=18.0.0,<19.0.0)"]
+streaming = ["pyarrow (>=18,<24)"]
 versioning = ["pydantic (>=2.0.0,<3.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
 
 [package.source]
 type = "git"
 url = "https://github.com/Team-Deepiri/deepiri-dataset-processor.git"
-reference = "v0.3.1"
-resolved_reference = "9315f265fc11d74281afeed2fa485dee134e4174"
+reference = "v0.3.2"
+resolved_reference = "1dfea272e33d2a7e8a8e306dff1e01aedc412223"
 
 [[package]]
 name = "deepiri-modelkit"
@@ -5062,4 +5062,4 @@ wandb = ["wandb"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.14"
-content-hash = "8010fb4cfbc60277859bbb4c4cf018b70b01f858a08584ac67ecb14e874a1577"
+content-hash = "31ef8be622791e35e822547ad6a6badaf74f5b0d8a33a177716f2c0a070b6258"
