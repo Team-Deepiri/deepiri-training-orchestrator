@@ -206,5 +206,7 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Local dataset versioning artifacts (written by tests / orchestrator runs)
-data/metadata/
+# Local dataset versioning artifacts (written by tests / orchestrator runs).
+# No library code reads these paths; they are runtime-only provenance dumps.
+data/metadata/*.json
+!data/metadata/README.md
