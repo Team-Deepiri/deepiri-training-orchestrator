@@ -4,6 +4,7 @@ deepiri-training-orchestrator — reproducible training loops, experiment tracki
 
 from deepiri_training_orchestrator.adapters import HFTrainingAdapter
 from deepiri_training_orchestrator.callbacks import (
+    BestCheckpointCallback,
     CallbackList,
     CheckpointCallback,
     EarlyStoppingCallback,
@@ -59,6 +60,7 @@ from deepiri_training_orchestrator.tracking import (
 
 __all__ = [
     "HFTrainingAdapter",
+    "BestCheckpointCallback",
     "CallbackList",
     "CheckpointCallback",
     "CheckpointConfig",
