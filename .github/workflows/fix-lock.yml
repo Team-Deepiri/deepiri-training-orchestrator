@@ -1,6 +1,6 @@
 name: Fix Poetry Lock
 
-on: [workflow_dispatch]
+on: [push]
 
 jobs:
   update-lock:
@@ -20,7 +20,7 @@ jobs:
         run: pip install poetry
 
       - name: Update Poetry Lock
-        run: poetry lock --no-update
+        run: poetry lock 
 
       - name: Commit and push changes
         run: |
