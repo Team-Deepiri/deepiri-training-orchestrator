@@ -945,7 +945,7 @@ openai = ["httpx", "langchain-openai", "openai"]
 
 [[package]]
 name = "deepiri-dataset-processor"
-version = "0.3.2"
+version = "0.3.3"
 description = "Production dataset preprocessing: clean, dedup, safety-check, quality, version, and manifest generation."
 optional = false
 python-versions = "^3.11"
@@ -973,8 +973,8 @@ versioning = ["pydantic (>=2.0.0,<3.0.0)", "sqlalchemy (>=2.0.0,<3.0.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/Team-Deepiri/deepiri-dataset-processor.git"
-reference = "v0.3.2"
-resolved_reference = "1dfea272e33d2a7e8a8e306dff1e01aedc412223"
+reference = "v0.3.3"
+resolved_reference = "4072892c4213f797193380bdd7da8b60b308ab06"
 
 [[package]]
 name = "deepiri-modelkit"
@@ -5062,4 +5062,4 @@ wandb = ["wandb"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.14"
-content-hash = "31ef8be622791e35e822547ad6a6badaf74f5b0d8a33a177716f2c0a070b6258"
+content-hash = "b93e2c332a97ce43864c7519c59b45ad32bebd21be057371bd0a16f6739e1e76"
