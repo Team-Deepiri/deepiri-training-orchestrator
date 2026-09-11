@@ -205,5 +205,76 @@ class TorchCheckpointCallback(CallbackList):
                 logger.warning("Could not save torch checkpoint: %s", e)
 
 
+class BestCheckpointCallback(CallbackList):
+    """Track the best monitored eval metric and record it as a checkpoint marker.
+
+    Complements :class:`EarlyStoppingCallback`, which stops on plateau but
+    never records which weights were best. On every improvement writes
+    ``best_checkpoint.json`` into ``directory`` (step, monitored value,
+    metrics, fingerprint) and, when ``state_dict_fn`` is provided, saves the
+    model state for that step to ``best_state.pt``.
+
+    Sets ``ctx.extra["best_step"]``, ``ctx.extra["best_metrics"]`` and
+    ``ctx.extra["best_value"]`` when an improvement is seen.
+    """
+
+    def __init__(
+        self,
+        directory: Path,
+        monitor: str = "loss",
+        mode: str = "min",
+        min_delta: float = 0.0,
+        *,
+        state_dict_fn: Optional[Callable[[], Dict[str, Any]]] = None,
+    ) -> None:
+        if mode not in ("min", "max"):
+            raise ValueError(f"mode must be 'min' or 'max', got {mode!r}")
+        self.directory = Path(directory)
+        self.monitor = monitor
+        self.mode = mode
+        self.min_delta = min_delta
+        self.state_dict_fn = state_dict_fn
+        self._best: Optional[float] = None
+
+    def on_eval_end(
+        self,
+        orchestrator: Any,
+        ctx: TrainingContext,
+        metrics: Dict[str, float],
+    ) -> None:
+        value = metrics.get(self.monitor)
+        if value is None:
+            return
+        improved = self._best is None or (
+            value < self._best - self.min_delta
+            if self.mode == "min"
+            else value > self._best + self.min_delta
+        )
+        if not improved:
+            return
+        self._best = value
+        ctx.extra["best_step"] = ctx.step
+        ctx.extra["best_metrics"] = dict(metrics)
+        ctx.extra["best_value"] = value
+        self.directory.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "step": ctx.step,
+            "monitor": self.monitor,
+            "value": value,
+            "metrics": metrics,
+            "fingerprint": ctx.fingerprint,
+        }
+        with open(self.directory / "best_checkpoint.json", "w", encoding="utf-8") as f:
+            json.dump(payload, f, indent=2)
+        if self.state_dict_fn is not None:
+            try:
+                import torch
+
+                state = self.state_dict_fn()
+                torch.save(state, self.directory / "best_state.pt")
+            except Exception as e:
+                logger.warning("Could not save best torch checkpoint: %s", e)
+
+
 def compose_callbacks(callbacks: Optional[List[Any]]) -> List[Any]:
     return list(callbacks) if callbacks else []
