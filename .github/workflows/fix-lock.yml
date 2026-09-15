@@ -2,6 +2,9 @@ name: Fix Poetry Lock
 
 on: [push]
 
+permissions:
+  contents: write
+
 jobs:
   update-lock:
     runs-on: ubuntu-latest
